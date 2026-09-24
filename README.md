@@ -38,21 +38,13 @@ and probably more things will end up here because apparently implementing one de
 
 a simple implementation of a state machine where an object moves between well-defined states based on events.
 
-```text
-IDLE
-  |
- start
-  ↓
-RUNNING
-  |
- pause
-  ↓
-PAUSED
-  |
-resume
-  ↓
-RUNNING
-```
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/d78a5c03-81c2-48b2-b280-5320f4fc8604"
+    width="200"
+    alt="state machine"
+  />
+</p>
 
 it demonstrates how to:
 
@@ -71,23 +63,13 @@ a simple **token bucket** implementation for controlling how frequently requests
 
 the basic idea:
 
-```text
-        tokens
-          ↓
-    ┌─────────────┐
-    │ TOKEN BUCKET │
-    └─────────────┘
-          ↓
-      request
-          ↓
-    ┌───────────┐
-    │  allowed? │
-    └───────────┘
-       ↓     ↓
-     yes      no
-      ↓        ↓
-   process    reject
-```
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/0f5536b9-e21b-440b-b463-82b88206b617"
+    width="450"
+    alt="token bucket rate limiter"
+  />
+</p>
 
 tokens are added to the bucket over time and each request consumes a token.
 
@@ -105,21 +87,13 @@ another approach to rate limiting that keeps track of requests in the **current 
 
 instead of treating every fixed window equally, the previous window is gradually given less weight as time moves forward.
 
-```text
-previous window              current window
-      │                            │
-      │                            │
-      ▼                            ▼
-
-┌───────────────────┬───────────────────┐
-│       prev        │       current     │
-│                   │                   │
-│    █████████      │    █████          │
-│                   │                   │
-└───────────────────┴───────────────────┘
-                    ↑
-                  now
-```
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/850f6387-dc0e-4b34-ac3c-9d87acf2e076"
+    width="300"
+    alt="sliding window counter"
+  />
+</p>
 
 the estimated request count is calculated roughly as:
 
@@ -154,12 +128,7 @@ because sometimes the server says:
 
 instead of retrying immediately, the client waits for an increasing amount of time between attempts.
 
-```text
-attempt 1 → fail → wait
-attempt 2 → fail → wait longer
-attempt 3 → fail → wait even longer
-attempt 4 → success
-```
+<img width="3919" height="183" alt="exponential_backoff" src="https://github.com/user-attachments/assets/2414f254-1894-4476-9e66-a37c31ea8d5b" />
 
 the delay generally grows exponentially:
 
