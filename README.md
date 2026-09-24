@@ -1,4 +1,3 @@
-
 <div align="center">
 
 ![LLD Design Techs](https://capsule-render.vercel.app/api?type=transparent&height=100&color=gradient&text=lld%20design%20techs&animation=fadeIn&textBg=false)
@@ -40,11 +39,14 @@ a simple implementation of a state machine where an object moves between well-de
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/d78a5c03-81c2-48b2-b280-5320f4fc8604"
-    width="200"
+    src="https://github.com/user-attachments/assets/24f8306e-7e91-47a2-9c21-3e11f8864bed"
+    width="500"
     alt="state machine"
   />
 </p>
+
+
+
 
 it demonstrates how to:
 
@@ -65,11 +67,13 @@ the basic idea:
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/0f5536b9-e21b-440b-b463-82b88206b617"
+    src="https://github.com/user-attachments/assets/1dc322c7-64b2-4d9d-a8d3-fca0ef3fa018"
     width="450"
     alt="token bucket rate limiter"
   />
 </p>
+
+
 
 tokens are added to the bucket over time and each request consumes a token.
 
@@ -89,8 +93,8 @@ instead of treating every fixed window equally, the previous window is gradually
 
 <p align="center">
   <img
-    src="https://github.com/user-attachments/assets/850f6387-dc0e-4b34-ac3c-9d87acf2e076"
-    width="300"
+    src="https://github.com/user-attachments/assets/3abb6e31-48c2-4f7c-8eba-0d8021fbabc5"
+    width="500"
     alt="sliding window counter"
   />
 </p>
@@ -128,7 +132,11 @@ because sometimes the server says:
 
 instead of retrying immediately, the client waits for an increasing amount of time between attempts.
 
-<img width="3919" height="183" alt="exponential_backoff" src="https://github.com/user-attachments/assets/2414f254-1894-4476-9e66-a37c31ea8d5b" />
+<!-- <img width="3919" height="183" alt="exponential_backoff" src="https://github.com/user-attachments/assets/2414f254-1894-4476-9e66-a37c31ea8d5b" /> -->
+
+<img width="5311" height="635" alt="exponential_backoff_v2" src="https://github.com/user-attachments/assets/2ddc540a-77ab-4332-96bf-f6b3ff131832" />
+
+
 
 the delay generally grows exponentially:
 
