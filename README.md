@@ -9,9 +9,6 @@ A tiny collection of **low-level design patterns and system design concepts**, i
 
 <img width="1280" height="720" alt="rate limiter w token bucket rate limiter w sliding window rate limiter w exponential backoff finite state machine" src="https://github.com/user-attachments/assets/06fd6454-262e-4fd9-85e7-63649409e5ee" />
 
-
-
-
 </div>
 
 <br>
@@ -29,6 +26,7 @@ currently, the repo includes:
 ```text
 state machine
 token bucket rate limiter
+sliding window counter
 exponential backoff
 ```
 
@@ -101,6 +99,53 @@ this is useful for:
 
 ---
 
+### sliding window counter
+
+another approach to rate limiting that keeps track of requests in the **current window** and uses the previous window as a weighted estimate.
+
+instead of treating every fixed window equally, the previous window is gradually given less weight as time moves forward.
+
+```text
+previous window              current window
+      │                            │
+      │                            │
+      ▼                            ▼
+
+┌───────────────────┬───────────────────┐
+│       prev        │       current     │
+│                   │                   │
+│    █████████      │    █████          │
+│                   │                   │
+└───────────────────┴───────────────────┘
+                    ↑
+                  now
+```
+
+the estimated request count is calculated roughly as:
+
+```text
+estimated count =
+current requests
++ previous requests × remaining window weight
+```
+
+for example:
+
+```text
+previous = 5
+current  = 2
+weight   = 0.4
+
+count = 2 + (5 × 0.4)
+      = 4
+```
+
+if the estimated count reaches the configured limit, the request is rejected.
+
+this approach helps smooth out the sharp boundaries that can happen with a simple fixed-window counter.
+
+---
+
 ### exponential backoff
 
 because sometimes the server says:
@@ -135,6 +180,8 @@ this pattern is commonly used when dealing with:
 - external APIs
 - distributed systems
 
+---
+
 ## why did i make this?
 
 mostly because reading:
@@ -143,7 +190,7 @@ mostly because reading:
 
 or
 
-> "implement exponential backoff"
+> "implement a rate limiter"
 
 is very different from actually sitting down and writing one.
 
@@ -168,6 +215,8 @@ lld-design-techs/
 ├── state-machine.py
 │
 ├── rate-limiter-token-bucket.py
+│
+├── rate-limiter-sliding-window.py
 │
 ├── rate-limiter-with-exponential-backoff.py
 │
@@ -196,6 +245,10 @@ python rate-limiter-token-bucket.py
 ```
 
 ```bash
+python rate-limiter-sliding-window.py
+```
+
+```bash
 python rate-limiter-with-exponential-backoff.py
 ```
 
@@ -203,10 +256,14 @@ python rate-limiter-with-exponential-backoff.py
 
 ```text
 State Machine
+
 Token Bucket
 Rate Limiting
+Sliding Window Counter
+
 Exponential Backoff
 Retry Logic
+
 State Transitions
 ```
 
