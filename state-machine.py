@@ -5,7 +5,7 @@ class State(Enum):
     RUNNING  = auto()
     PAUSED = auto()
     STOPPED = auto()
-
+    
 TRANSITIONS = {
     (State.IDLE, "start") : State.RUNNING,
     (State.RUNNING, "pause") : State.PAUSED,
