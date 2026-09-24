@@ -1,4 +1,4 @@
-# sliding window
+# weighted sliding window counter rate limiter
 
 import time
 from functools import wraps
