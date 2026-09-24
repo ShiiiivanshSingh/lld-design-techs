@@ -25,7 +25,7 @@ def retry(max_retry = 3, delay = 1.0, max_delay = 10.0):
 @retry(max_retry=4, delay=2.0)
 def fetch_bad():
     print("Attempting to fetch")
-    raise ConnectionError("Service Unavilable")
+    raise ConnectionError("Service Unavailable")
 
 if __name__ == "__main__":
     try:
