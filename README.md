@@ -246,12 +246,6 @@ State Transitions
 
 more will probably be added as i keep going down the LLD rabbit hole.
 
-## made by
-
-**shivansh**
-
-[GitHub](https://github.com/ShiiiivanshSingh)
-
 ---
 
 if you find something wrong, feel free to open an issue.
