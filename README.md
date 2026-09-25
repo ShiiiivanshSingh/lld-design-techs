@@ -6,7 +6,10 @@ A tiny collection of **low-level design patterns and system design concepts**, i
 
 <br>
 
-<img width="1280" height="720" alt="rate limiter w token bucket rate limiter w sliding window rate limiter w exponential backoff finite state machine" src="https://github.com/user-attachments/assets/06fd6454-262e-4fd9-85e7-63649409e5ee" />
+<!-- <img width="1280" height="720" alt="rate limiter w token bucket rate limiter w sliding window rate limiter w exponential backoff finite state machine" src="https://github.com/user-attachments/assets/06fd6454-262e-4fd9-85e7-63649409e5ee" /> -->
+
+
+<img width="1280" height="720" alt="1" src="https://github.com/user-attachments/assets/61dfef0d-8ccd-42c7-be46-1a8524e5a35d" />
 
 </div>
 
@@ -22,12 +25,13 @@ just small, focused Python implementations of concepts that show up a lot in bac
 
 currently, the repo includes:
 
-```text
+~~~text
 state machine
 token bucket rate limiter
 sliding window counter
 exponential backoff
-```
+url shortener
+~~~
 
 and probably more things will end up here because apparently implementing one design pattern is never enough.
 
@@ -44,9 +48,6 @@ a simple implementation of a state machine where an object moves between well-de
     alt="state machine"
   />
 </p>
-
-
-
 
 it demonstrates how to:
 
@@ -72,8 +73,6 @@ the basic idea:
     alt="token bucket rate limiter"
   />
 </p>
-
-
 
 tokens are added to the bucket over time and each request consumes a token.
 
@@ -101,22 +100,22 @@ instead of treating every fixed window equally, the previous window is gradually
 
 the estimated request count is calculated roughly as:
 
-```text
+~~~text
 estimated count =
 current requests
 + previous requests × remaining window weight
-```
+~~~
 
 for example:
 
-```text
+~~~text
 previous = 5
 current  = 2
 weight   = 0.4
 
 count = 2 + (5 × 0.4)
       = 4
-```
+~~~
 
 if the estimated count reaches the configured limit, the request is rejected.
 
@@ -136,17 +135,15 @@ instead of retrying immediately, the client waits for an increasing amount of ti
 
 <img width="5311" height="635" alt="exponential_backoff_v2" src="https://github.com/user-attachments/assets/2ddc540a-77ab-4332-96bf-f6b3ff131832" />
 
-
-
 the delay generally grows exponentially:
 
-```text
+~~~text
 1s
 2s
 4s
 8s
 ...
-```
+~~~
 
 the implementation also includes a maximum delay so things don't get ridiculous.
 
@@ -156,6 +153,69 @@ this pattern is commonly used when dealing with:
 - overloaded services
 - external APIs
 - distributed systems
+
+---
+
+### URL shortener
+
+a simple in-memory **URL shortener** that generates short codes and redirects them to the original URL.
+
+
+
+
+
+
+the basic flow is:
+
+~~~text
+long URL
+   ↓
+generate 6-character code
+   ↓
+store code → URL
+   ↓
+http://localhost:5000/abc123
+   ↓
+302 redirect
+   ↓
+original URL
+~~~
+
+<img width="1280" height="720" alt="2" src="https://github.com/user-attachments/assets/f28b5c0d-0844-4514-be36-87d49744c91b" />
+
+<!-- <img width="3506" height="2008" alt="url_shortener" src="https://github.com/user-attachments/assets/96607eee-c625-4749-a310-5ed75f95297d" /> -->
+
+the implementation demonstrates:
+
+* short-code generation
+* collision checking
+* hash-map based URL lookup
+* HTTP request handling
+* HTTP 302 redirects
+
+the shortener uses two dictionaries:
+
+~~~text
+code → URL
+URL  → code
+~~~
+
+run it with:
+
+~~~bash
+python url-shortener.py
+~~~
+
+the server starts locally:
+
+~~~text
+Short URL: http://localhost:5000/abc123
+Server running on http://localhost:5000
+~~~
+
+opening the generated short URL redirects to the original URL.
+
+this is intentionally kept simple and in-memory, so the mappings disappear when the server stops.
 
 ---
 
@@ -175,18 +235,18 @@ so this repo is basically me turning those concepts into small working implement
 
 the goal is to keep each example:
 
-```text
+~~~text
 small
 readable
 runnable
 easy to modify
-```
+~~~
 
 rather than building unnecessarily complicated frameworks around simple ideas.
 
 ## structure
 
-```text
+~~~text
 lld-design-techs/
 │
 ├── state-machine.py
@@ -197,8 +257,10 @@ lld-design-techs/
 │
 ├── rate-limiter-with-exponential-backoff.py
 │
+├── url-shortener.py
+│
 └── README.md
-```
+~~~
 
 ## running the examples
 
@@ -206,32 +268,36 @@ all implementations are written in Python.
 
 clone the repo:
 
-```bash
+~~~bash
 git clone https://github.com/ShiiiivanshSingh/lld-design-techs.git
 cd lld-design-techs
-```
+~~~
 
 then run whichever example you want:
 
-```bash
+~~~bash
 python state-machine.py
-```
+~~~
 
-```bash
+~~~bash
 python rate-limiter-token-bucket.py
-```
+~~~
 
-```bash
+~~~bash
 python rate-limiter-sliding-window.py
-```
+~~~
 
-```bash
+~~~bash
 python rate-limiter-with-exponential-backoff.py
-```
+~~~
+
+~~~bash
+python url-shortener.py
+~~~
 
 ## concepts covered
 
-```text
+~~~text
 State Machine
 
 Token Bucket
@@ -241,8 +307,12 @@ Sliding Window Counter
 Exponential Backoff
 Retry Logic
 
+URL Shortener
+Hash Maps
+HTTP Redirects
+
 State Transitions
-```
+~~~
 
 more will probably be added as i keep going down the LLD rabbit hole.
 
